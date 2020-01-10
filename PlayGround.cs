@@ -18,9 +18,9 @@ namespace Ray
 
         private char Shape;
 
-        public ConsoleColor Color { get; set; }
+        private ConsoleColor Color { get; set; }
 
-        public PixelBody Body { get; set; }
+        private PixelBody Body { get; set; }
 
         public PlayGround(int sizeX, int sizeY, int startX, int startY, char shape, ConsoleColor color)
         {
@@ -34,12 +34,12 @@ namespace Ray
             GenerateBody();
         }
 
-        public void DrawBody()
+        public void Draw()
         {
             Body.Pixels.ForEach(p => p.Draw());
         }
 
-        public void GenerateBody()
+        private void GenerateBody()
         {
             int topBorder = StartingY+1;
             int bottomBorder = StartingY + SizeY;

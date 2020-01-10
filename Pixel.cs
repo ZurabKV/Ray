@@ -15,7 +15,7 @@ namespace Ray
 
         public ConsoleColor color { get; set; } = ConsoleColor.White;
 
-        public Pixel(int x, int y, char shape, ConsoleColor color=ConsoleColor.White)
+        public Pixel(int x, int y, char shape = '.', ConsoleColor color=ConsoleColor.White)
         {
             this.x = x;
             this.y = y;
@@ -29,6 +29,11 @@ namespace Ray
             Console.ForegroundColor = color;
             Console.Write(shape);
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public double DistanceToAnotherPixel(Pixel anotherPixel)
+        {
+            return Math.Sqrt(Math.Pow(anotherPixel.x - x, 2) + Math.Pow(anotherPixel.y - y, 2));
         }
     }
 }

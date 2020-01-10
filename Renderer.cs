@@ -11,7 +11,8 @@ namespace Ray
     {
         public static void DrawScreen(Screen screen)
         {
-            screen.SquareA.DrawBody();
+            screen.SquareA.Draw();
+            screen.lineA.Draw();
         }
     }
 }

@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Light.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="PixelBody.cs" />
     <Compile Include="PlayGround.cs" />

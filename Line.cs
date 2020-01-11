@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ray
@@ -10,7 +11,7 @@ namespace Ray
     {
         private Pixel startPoint;
         private Pixel endPoint;
-        private PixelBody Body;
+        public PixelBody Body;
 
         public Line(int startX, int startY, int endX, int endY)
         {
@@ -19,7 +20,7 @@ namespace Ray
             Body = new PixelBody();
             GenerateBody();
             //Body.Pixels.Add(startPoint);
-            //Body.Pixels.Add(endPoint);
+            Body.Pixels.Add(endPoint);
         }
         public void Draw()
         {
@@ -130,7 +131,6 @@ namespace Ray
                 for (int i = 0; i < surroundingCells.Count; i++)
                 {
                     Pixel cellOnReview = surroundingCells[i];
-                    cellOnReview.SetCursorOnIt();
 
                     var nearestDistanceSoFar = nearestCellSoFar.DistanceToAnotherPixel(endPoint);
                     var distanceOnReviev = cellOnReview.DistanceToAnotherPixel(endPoint);

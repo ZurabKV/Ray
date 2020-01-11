@@ -31,11 +31,6 @@ namespace Ray
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void SetCursorOnIt()
-        {
-            Console.SetCursorPosition(x, y);
-        }
-
         public double DistanceToAnotherPixel(Pixel anotherPixel)
         {
             double distance = Math.Sqrt(Math.Pow(anotherPixel.x - x, 2) + Math.Pow(anotherPixel.y - y, 2));

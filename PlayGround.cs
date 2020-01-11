@@ -20,7 +20,7 @@ namespace Ray
 
         private ConsoleColor Color { get; set; }
 
-        private PixelBody Body { get; set; }
+        public PixelBody Body { get; set; }
 
         public PlayGround(int sizeX, int sizeY, int startX, int startY, char shape, ConsoleColor color)
         {

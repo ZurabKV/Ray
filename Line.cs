@@ -41,94 +41,76 @@ namespace Ray
             };
         }
 
-
-        //private void GenerateBody()
-        //{
-        //    Console.WriteLine("0123456789");
-        //    Console.WriteLine("1---------");
-        //    Console.WriteLine("2---------");
-        //    Console.WriteLine("3---------");
-        //    Console.WriteLine("4---------");
-        //    Console.WriteLine("5---------");
-
-        //    Pixel chosenCell = startPoint;
-        //    while (chosenCell.x != endPoint.x && chosenCell.y != endPoint.y) 
-        //    {
-        //        chosenCell.Draw();
-        //        endPoint.Draw();
-
-        //        int distX = endPoint.x - startPoint.x;
-        //        int distY = endPoint.y - startPoint.y;
-        //        double directionCoef = distX / distY > 1 ? distX / distY : distY / distX;
-        //        int stepsInOneDirectionMade = 0;
-        //        int diagonalstepsMade = 0;
-
-        //        var surroundingCells = GetSurroundingCells(chosenCell);
-        //        foreach (Pixel cell in surroundingCells)
-        //        {
-        //            var chosenDist = chosenCell.DistanceToAnotherPixel(endPoint);
-        //            var dist = cell.DistanceToAnotherPixel(endPoint);
-
-        //            if (dist < chosenDist)
-        //            {
-        //                chosenCell = cell;
-        //            }
-        //        }
-        //        Body.Pixels.Add(chosenCell);
-
-
-        //        //chosenCell = GetSurroundingCells(chosenCell)
-        //        //    .OrderBy(cell => cell.DistanceToAnotherPixel(endPoint))
-        //        //    .First();
-        //    }
-        //}
+        private void GenerateStraightLine()
+        {
+            int toRight = endPoint.x - startPoint.x;
+            int downwards = endPoint.y - startPoint.y;
+            if (toRight!=0&&downwards!=0)
+            {
+                throw new Exception($"line cannot be straight: startPoint.x = {startPoint.x}, startPoint.y = {startPoint.y};  endPoint.x = {endPoint.x}  endPoint.y = {endPoint.y} ");
+            }
+            if (toRight == 0 && downwards == 0)
+            {
+                throw new Exception("line has no demensins");
+            }
+            if (downwards==0) //the draw horizontally
+            {
+                if (toRight>0)
+                {
+                    for (int i = 0; i <= Math.Abs(toRight); i++)
+                    {
+                        Body.Pixels.Add(new Pixel(startPoint.x + i, startPoint.y));
+                    } 
+                }
+                else
+                {
+                    for (int i = 0; i <= Math.Abs(toRight); i++)
+                    {
+                        Body.Pixels.Add(new Pixel(startPoint.x - i, startPoint.y));
+                    }
+                }
+            }
+            else //the draw vertically
+            {
+                if (downwards>0)
+                {
+                    for (int i = 0; i <= Math.Abs(downwards); i++)
+                    {
+                        Body.Pixels.Add(new Pixel(startPoint.x, startPoint.y + i));
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i <= Math.Abs(downwards); i++)
+                    {
+                        Body.Pixels.Add(new Pixel(startPoint.x, startPoint.y - i));
+                    }
+                }
+            }
+        }
 
         private void GenerateBody()
         {
-            Console.WriteLine("0123456789012345678901234567890123456789");
-            Console.WriteLine("1---------------------------------------");
-            Console.WriteLine("2---------------------------------------");
-            Console.WriteLine("3---------------------------------------");
-            Console.WriteLine("4---------------------------------------");
-            Console.WriteLine("5---------------------------------------");
-            Console.WriteLine("6---------------------------------------");
-            Console.WriteLine("7---------------------------------------");
-            Console.WriteLine("8---------------------------------------");
-            Console.WriteLine("9---------------------------------------");
-            Console.WriteLine("0---------------------------------------");
-            Console.WriteLine("1---------------------------------------");
-            Console.WriteLine("2---------------------------------------");
-            Console.WriteLine("3---------------------------------------");
-            Console.WriteLine("4---------------------------------------");
-            Console.WriteLine("5---------------------------------------");
-            Console.WriteLine("6---------------------------------------");
-            Console.WriteLine("7---------------------------------------");
-            Console.WriteLine("8---------------------------------------");
-            Console.WriteLine("9---------------------------------------");
-            Console.WriteLine("0---------------------------------------");
-            Console.WriteLine("1---------------------------------------");
-            Console.WriteLine("2---------------------------------------");
-            Console.WriteLine("3---------------------------------------");
-            Console.WriteLine("4---------------------------------------");
-            Console.WriteLine("5---------------------------------------");
-            Console.WriteLine("6---------------------------------------");
-            Console.WriteLine("7---------------------------------------");
-            Console.WriteLine("8---------------------------------------");
-            Console.WriteLine("9---------------------------------------");
-            Console.WriteLine("0---------------------------------------");
+            double distX = endPoint.x - startPoint.x;
+            double distY = endPoint.y - startPoint.y;
 
-            int distX = endPoint.x - startPoint.x;
-            int distY = endPoint.y - startPoint.y;
+            if (distX==0||distY==0)
+            {
+                GenerateStraightLine();
+                return;
+            }
+
             double directionCoef = distX / distY > 1 ? distX / distY : distY / distX;
-            int moderatedMovesMax = (int)Math.Round(directionCoef);
+            double restrictedMovesMax = (directionCoef);
+            double coefFloatingPart = directionCoef-restrictedMovesMax;
 
             Pixel currentCell = startPoint;
             while (currentCell.x != endPoint.x && currentCell.y != endPoint.y)
             {
-                currentCell.Draw(); //for debugging
-                endPoint.Draw(); //for debugging
+                //currentCell.Draw(); //for debugging
+                //endPoint.Draw(); //for debugging
 
-                int moderatedMovesLeft = moderatedMovesMax;
+                double moderatedMovesLeft = restrictedMovesMax;
                 int freeMovesLeft = 1;
 
                 while (freeMovesLeft >= 1)
@@ -149,7 +131,7 @@ namespace Ray
                     moderatedMovesLeft--;
                     Body.Pixels.Add(currentCell);
                 }
-                currentCell.Draw(); //for debugging
+                //currentCell.Draw(); //for debugging
                 while (moderatedMovesLeft > 0)
                 {
                     Pixel nearestCellSoFar = currentCell;
@@ -172,7 +154,7 @@ namespace Ray
                         }
                     }
                     currentCell = nearestCellSoFar;
-                    currentCell.Draw(); //for debugging
+                    //currentCell.Draw(); //for debugging
                     moderatedMovesLeft--;
                     Body.Pixels.Add(currentCell);
                 }

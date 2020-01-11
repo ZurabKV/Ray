@@ -94,15 +94,17 @@ namespace Ray
             double distX = endPoint.x - startPoint.x;
             double distY = endPoint.y - startPoint.y;
 
+            double directionCoef =Math.Abs(distX / distY);
+
             if (distX==0||distY==0)
             {
                 GenerateStraightLine();
                 return;
             }
 
-            double directionCoef = distX / distY > 1 ? distX / distY : distY / distX;
-            double restrictedMovesMax = (directionCoef);
-            double coefFloatingPart = directionCoef-restrictedMovesMax;
+            double directionCoef1Plus = directionCoef > 1 ? directionCoef : 1/directionCoef;
+            double restrictedMovesMax = (directionCoef1Plus);
+            //double coefFloatingPart = Math.Abs(directionCoef1Plus-restrictedMovesMax);
 
             Pixel currentCell = startPoint;
             while (currentCell.x != endPoint.x && currentCell.y != endPoint.y)
@@ -112,52 +114,61 @@ namespace Ray
 
                 double moderatedMovesLeft = restrictedMovesMax;
                 int freeMovesLeft = 1;
-
-                while (freeMovesLeft >= 1)
-                {
-                    var surroundingCells = GetSurroundingCells(currentCell);
-                    foreach (Pixel cell in surroundingCells)
-                    {
-                        var chosenDist = currentCell.DistanceToAnotherPixel(endPoint);
-                        var dist = cell.DistanceToAnotherPixel(endPoint);
-
-                        if (dist < chosenDist)
-                        {
-                            currentCell = cell;
-                        }
-                    }
-
-                    freeMovesLeft--;
-                    moderatedMovesLeft--;
-                    Body.Pixels.Add(currentCell);
-                }
+                MoveFreely(ref currentCell, ref moderatedMovesLeft, ref freeMovesLeft);
                 //currentCell.Draw(); //for debugging
-                while (moderatedMovesLeft > 0)
+                RestrictedMovement(ref currentCell, ref moderatedMovesLeft);
+            }
+        }
+
+        private void RestrictedMovement(ref Pixel currentCell, ref double moderatedMovesLeft)
+        {
+            while (moderatedMovesLeft > 0)
+            {
+                Pixel nearestCellSoFar = currentCell;
+
+                var surroundingCells = GetSurroundingCells(currentCell);
+                for (int i = 0; i < surroundingCells.Count; i++)
                 {
-                    Pixel nearestCellSoFar = currentCell;
+                    Pixel cellOnReview = surroundingCells[i];
+                    cellOnReview.SetCursorOnIt();
 
-                    var surroundingCells = GetSurroundingCells(currentCell);
-                    for (int i = 0; i < surroundingCells.Count; i++)
+                    var nearestDistanceSoFar = nearestCellSoFar.DistanceToAnotherPixel(endPoint);
+                    var distanceOnReviev = cellOnReview.DistanceToAnotherPixel(endPoint);
+
+                    if (distanceOnReviev < nearestDistanceSoFar)//
                     {
-                        Pixel cellOnReview = surroundingCells[i];
-                        cellOnReview.SetCursorOnIt();
-
-                        var nearestDistanceSoFar = nearestCellSoFar.DistanceToAnotherPixel(endPoint);
-                        var distanceOnReviev = cellOnReview.DistanceToAnotherPixel(endPoint);
-
-                        if (distanceOnReviev < nearestDistanceSoFar)//
+                        if (cellOnReview.IsNotDiagonalToAnotherNearestPixel(currentCell))
                         {
-                            if (cellOnReview.IsNotDiagonalToAnotherNearestPixel(currentCell))
-                            {
-                                nearestCellSoFar = cellOnReview;
-                            }
+                            nearestCellSoFar = cellOnReview;
                         }
                     }
-                    currentCell = nearestCellSoFar;
-                    //currentCell.Draw(); //for debugging
-                    moderatedMovesLeft--;
-                    Body.Pixels.Add(currentCell);
                 }
+                currentCell = nearestCellSoFar;
+                //currentCell.Draw(); //for debugging
+                moderatedMovesLeft--;
+                Body.Pixels.Add(currentCell);
+            }
+        }
+
+        private void MoveFreely(ref Pixel currentCell, ref double moderatedMovesLeft, ref int freeMovesLeft)
+        {
+            while (freeMovesLeft >= 1)
+            {
+                var surroundingCells = GetSurroundingCells(currentCell);
+                foreach (Pixel cell in surroundingCells)
+                {
+                    var chosenDist = currentCell.DistanceToAnotherPixel(endPoint);
+                    var dist = cell.DistanceToAnotherPixel(endPoint);
+
+                    if (dist < chosenDist)
+                    {
+                        currentCell = cell;
+                    }
+                }
+
+                freeMovesLeft--;
+                moderatedMovesLeft--;
+                Body.Pixels.Add(currentCell);
             }
         }
     }

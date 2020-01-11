@@ -61,23 +61,23 @@ namespace Ray
             Console.WriteLine("30---------------------------------------");
             SquareA = new PlayGround(40, 30, 0, 0, '#', ConsoleColor.DarkCyan);
 
-            //line0 = new Line(20, 15, 38, 15);
+            line0 = new Line(20, 15, 38, 15);
             line20 = new Line(20, 15, 38, 12);
-            //line45 = new Line(20, 15, 30, 5);
-            //line70 = new Line(20, 15, 23, 5);
-            //line90 = new Line(20, 15, 20, 3);
-            //line110 = new Line(20, 15, 15, 3);
-            //line135 = new Line(20, 15, 10, 5);
-            //line160 = new Line(20, 15, 5, 12);  
-            //line180 = new Line(20, 15, 3, 15);  
-            //line200 = new Line(20, 15, 3, 18);  
-            //line225 = new Line(20, 15, 10, 25);  
-            //line250 = new Line(20, 15, 17, 28);  
-            //line270 = new Line(20, 15, 20, 28);  
-            //line290 = new Line(20, 15, 23, 28);  
-            //line315 = new Line(20, 15, 30, 25);  
-            //line340 = new Line(20, 15, 35, 18);  
-            
+            line45 = new Line(20, 15, 30, 5);
+            line70 = new Line(20, 15, 23, 5);
+            line90 = new Line(20, 15, 20, 3);
+            line110 = new Line(20, 15, 15, 3);
+            line135 = new Line(20, 15, 10, 5);
+            line160 = new Line(20, 15, 5, 12);
+            line180 = new Line(20, 15, 3, 15);
+            line200 = new Line(20, 15, 3, 18);
+            line225 = new Line(20, 15, 10, 25);
+            line250 = new Line(20, 15, 17, 28);
+            line270 = new Line(20, 15, 20, 28);
+            line290 = new Line(20, 15, 23, 28);
+            line315 = new Line(20, 15, 30, 25);
+            line340 = new Line(20, 15, 35, 18);
+
         }
     }
 }

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Ray
 {
-    class Line
+    class Ray
     {
         private Pixel startPoint;
         private Pixel endPoint;
         public PixelBody Body;
 
-        public Line(int startX, int startY, int endX, int endY)
+        public Ray(int startX, int startY, int endX, int endY)
         {
             startPoint = new Pixel(startX, startY);
             endPoint = new Pixel(endX, endY);
@@ -50,10 +50,10 @@ namespace Ray
             {
                 throw new Exception($"line cannot be straight: startPoint.x = {startPoint.x}, startPoint.y = {startPoint.y};  endPoint.x = {endPoint.x}  endPoint.y = {endPoint.y} ");
             }
-            if (toRight == 0 && downwards == 0)
-            {
-                throw new Exception("line has no demensins");
-            }
+            //if (toRight == 0 && downwards == 0)
+            //{
+            //    throw new Exception("line has no demensins");
+            //}
             if (downwards==0) //the draw horizontally
             {
                 if (toRight>0)

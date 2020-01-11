@@ -11,11 +11,13 @@ namespace Ray
         public int x;
         public int y;
 
+        private bool IsLit { get; set; } = false;
+
         public char shape;
 
         public ConsoleColor color { get; set; } = ConsoleColor.White;
 
-        public Pixel(int x, int y, char shape = 'o', ConsoleColor color=ConsoleColor.White)
+        public Pixel(int x, int y, char shape = '.', ConsoleColor color=ConsoleColor.White)
         {
             this.x = x;
             this.y = y;
@@ -40,11 +42,32 @@ namespace Ray
         public bool IsNotDiagonalToAnotherNearestPixel(Pixel anotherPixel)
         {
             var distanceToAnotherPixel = DistanceToAnotherPixel(anotherPixel);
-            //if (distanceToAnotherPixel > 1.415d)
-            //{
-            //    throw new Exception("PIXEL IS NOT NEAREST, YOU MOTHERFUCKER!!!");
-            //}
             return DistanceToAnotherPixel(anotherPixel) == 1;
         }
+
+        public void ChangeLightState()
+        {
+            IsLit = !IsLit;
+        }
+
+        public void Move(ConsoleKeyInfo key)
+        {
+            switch (key.Key)
+            {
+                case ConsoleKey.LeftArrow:
+                    x--;
+                    break;
+                case ConsoleKey.RightArrow:
+                    x++;
+                    break;
+                case ConsoleKey.UpArrow:
+                    y--;
+                    break;
+                case ConsoleKey.DownArrow:
+                    y++;
+                    break;
+            }
+        }
+
     }
 }

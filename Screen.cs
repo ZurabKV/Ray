@@ -14,12 +14,9 @@ namespace Ray
        
         public Screen()
         {
-            SquareA = new PlayGround(40, 30, 0, 0, '#', ConsoleColor.DarkCyan);
+            SquareA = new PlayGround(80, 20, 0, 0, '#', ConsoleColor.DarkCyan);
 
-            light = new Light(new Pixel(25, 10, color: ConsoleColor.Yellow));
-            
+            light = new Light(new Pixel(20, 15));
         }
-
-        
     }
 }

@@ -18,17 +18,18 @@ namespace Ray
             Body = new PixelBody();
             source = lightSource;
         }
-        public void LightOn(PixelBody surface)
+        public void CastOn(PixelBody surface)
         {
+            Body.Pixels.Clear();
             GetBody(surface);
-            Body.Pixels.ForEach((p) => { p.Draw(); Thread.Sleep(5); });
+            Body.Pixels.ForEach(p => p.Draw());
         }
 
         private void GetBody(PixelBody surface)
         {
             foreach (Pixel wall in surface.Pixels)
             {
-                Line ray = new Line(source.x, source.y, wall.x, wall.y);
+                Ray ray = new Ray(source.x, source.y, wall.x, wall.y);
                 Body.Pixels.AddRange(ray.Body.Pixels);
             }
         }

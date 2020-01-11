@@ -67,9 +67,12 @@
   <ItemGroup>
     <Compile Include="Input.cs" />
     <Compile Include="Light.cs" />
-    <Compile Include="Ray.cs" />
+    <Compile Include="MultipixelObjects\MultipixelObject.cs" />
+    <Compile Include="MultipixelObjects\Obsticle.cs" />
+    <Compile Include="MultipixelObjects\LightRay.cs" />
     <Compile Include="PixelBody.cs" />
-    <Compile Include="PlayGround.cs" />
+    <Compile Include="MultipixelObjects\PlayGround.cs" />
+    <Compile Include="RayBody.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="Pixel.cs" />

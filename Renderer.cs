@@ -14,6 +14,7 @@ namespace Ray
             Console.Clear();
             screen.SquareA.Draw();
             screen.light.CastOn(screen.SquareA.Body);
+            screen.obsticle.Draw();
         }
     }
 }

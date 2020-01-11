@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ray.MultipixelObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,26 +12,27 @@ namespace Ray
     {
         public Pixel source { get; set; }
 
-        private PixelBody Body { get; set; }
+        private RayBody Body { get; set; }
 
         public Light(Pixel lightSource)
         {
-            Body = new PixelBody();
+            Body = new RayBody();
             source = lightSource;
         }
         public void CastOn(PixelBody surface)
         {
-            Body.Pixels.Clear();
+            Body.rays.Clear();
             GetBody(surface);
-            Body.Pixels.ForEach(p => p.Draw());
+            Body.rays.ForEach(r => r.Draw());
+
         }
 
         private void GetBody(PixelBody surface)
         {
             foreach (Pixel wall in surface.Pixels)
             {
-                Ray ray = new Ray(source.x, source.y, wall.x, wall.y);
-                Body.Pixels.AddRange(ray.Body.Pixels);
+                LightRay ray = new LightRay(source.x, source.y, wall.x, wall.y);
+                Body.rays.Add(ray);
             }
         }
     }

@@ -5,105 +5,83 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ray
+namespace Ray.MultipixelObjects
 {
-    class Ray
+    class LightRay : BasicObject
     {
         private Pixel startPoint;
         private Pixel endPoint;
-        public PixelBody Body;
 
-        public Ray(int startX, int startY, int endX, int endY)
+        public LightRay(int startX, int startY, int endX, int endY, char shape = '.', ConsoleColor color = ConsoleColor.White) : base(shape, color)
         {
             startPoint = new Pixel(startX, startY);
             endPoint = new Pixel(endX, endY);
-            Body = new PixelBody();
             GenerateBody();
-            //Body.Pixels.Add(startPoint);
-            Body.Pixels.Add(endPoint);
-        }
-        public void Draw()
-        {
-            Body.Pixels.ForEach(p => p.Draw());
-        }
-
-        public List<Pixel> GetSurroundingCells(Pixel pixel)
-        {
-            return new List<Pixel>
-            {
-                new Pixel(pixel.x-1,pixel.y-1),
-                new Pixel(pixel.x,  pixel.y-1),
-                new Pixel(pixel.x+1,pixel.y-1),
-                new Pixel(pixel.x-1,pixel.y),
-                new Pixel(pixel.x+1,pixel.y),
-                new Pixel(pixel.x-1,pixel.y+1),
-                new Pixel(pixel.x,  pixel.y+1),
-                new Pixel(pixel.x+1,pixel.y+1),
-            };
         }
 
         private void GenerateStraightLine()
         {
             int toRight = endPoint.x - startPoint.x;
             int downwards = endPoint.y - startPoint.y;
-            if (toRight!=0&&downwards!=0)
+
+            if (toRight != 0 && downwards != 0)
             {
                 throw new Exception($"line cannot be straight: startPoint.x = {startPoint.x}, startPoint.y = {startPoint.y};  endPoint.x = {endPoint.x}  endPoint.y = {endPoint.y} ");
             }
-            //if (toRight == 0 && downwards == 0)
-            //{
-            //    throw new Exception("line has no demensins");
-            //}
-            if (downwards==0) //the draw horizontally
+
+            if (downwards == 0) //the draw horizontally
             {
-                if (toRight>0)
+                if (toRight > 0)
                 {
                     for (int i = 0; i <= Math.Abs(toRight); i++)
                     {
-                        Body.Pixels.Add(new Pixel(startPoint.x + i, startPoint.y));
-                    } 
+                        Body.Pixels.Add(new Pixel(startPoint.x + i, startPoint.y, Shape, Color));
+                    }
                 }
+
                 else
                 {
                     for (int i = 0; i <= Math.Abs(toRight); i++)
                     {
-                        Body.Pixels.Add(new Pixel(startPoint.x - i, startPoint.y));
+                        Body.Pixels.Add(new Pixel(startPoint.x - i, startPoint.y, Shape, Color));
                     }
                 }
             }
+
             else //the draw vertically
             {
-                if (downwards>0)
+                if (downwards > 0)
                 {
                     for (int i = 0; i <= Math.Abs(downwards); i++)
                     {
-                        Body.Pixels.Add(new Pixel(startPoint.x, startPoint.y + i));
+                        Body.Pixels.Add(new Pixel(startPoint.x, startPoint.y + i, Shape, Color));
                     }
                 }
+
                 else
                 {
                     for (int i = 0; i <= Math.Abs(downwards); i++)
                     {
-                        Body.Pixels.Add(new Pixel(startPoint.x, startPoint.y - i));
+                        Body.Pixels.Add(new Pixel(startPoint.x, startPoint.y - i, Shape, Color));
                     }
                 }
             }
         }
 
-        private void GenerateBody()
+        protected override void GenerateBody()
         {
             double distX = endPoint.x - startPoint.x;
             double distY = endPoint.y - startPoint.y;
 
-            double directionCoef =Math.Abs(distX / distY);
+            double directionCoef = Math.Abs(distX / distY);
 
-            if (distX==0||distY==0)
+            if (distX == 0 || distY == 0)
             {
                 GenerateStraightLine();
                 return;
             }
 
-            double directionCoef1Plus = directionCoef > 1 ? directionCoef : 1/directionCoef;
+            double directionCoef1Plus = directionCoef > 1 ? directionCoef : 1 / directionCoef;
             double restrictedMovesMax = (directionCoef1Plus);
             //double coefFloatingPart = Math.Abs(directionCoef1Plus-restrictedMovesMax);
 

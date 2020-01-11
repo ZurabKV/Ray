@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ray
+namespace Ray.MultipixelObjects
 {
-    class PlayGround
+    class PlayGround: BasicObject
     {
         private int SizeX;
 
@@ -16,30 +16,16 @@ namespace Ray
 
         private int StartingY;
 
-        private char Shape;
-
-        private ConsoleColor Color { get; set; }
-
-        public PixelBody Body { get; set; }
-
-        public PlayGround(int sizeX, int sizeY, int startX, int startY, char shape, ConsoleColor color)
+        public PlayGround(int sizeX, int sizeY, int startX, int startY, char shape = '#', ConsoleColor color = ConsoleColor.White) : base(shape, color)
         {
             SizeX = sizeX;
             SizeY = sizeY;
             StartingX = startX;
             StartingY = startY;
-            Shape = shape;
-            Color = color;
-            Body = new PixelBody();
             GenerateBody();
         }
 
-        public void Draw()
-        {
-            Body.Pixels.ForEach(p => p.Draw());
-        }
-
-        private void GenerateBody()
+        protected override void GenerateBody()
         {
             int topBorder = StartingY+1;
             int bottomBorder = StartingY + SizeY;

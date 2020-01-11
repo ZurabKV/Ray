@@ -15,7 +15,7 @@ namespace Ray
 
         public ConsoleColor color { get; set; } = ConsoleColor.White;
 
-        public Pixel(int x, int y, char shape = '.', ConsoleColor color=ConsoleColor.White)
+        public Pixel(int x, int y, char shape = 'o', ConsoleColor color=ConsoleColor.White)
         {
             this.x = x;
             this.y = y;
@@ -31,9 +31,25 @@ namespace Ray
             Console.ForegroundColor = ConsoleColor.White;
         }
 
+        public void SetCursorOnIt()
+        {
+            Console.SetCursorPosition(x, y);
+        }
+
         public double DistanceToAnotherPixel(Pixel anotherPixel)
         {
-            return Math.Sqrt(Math.Pow(anotherPixel.x - x, 2) + Math.Pow(anotherPixel.y - y, 2));
+            double distance = Math.Sqrt(Math.Pow(anotherPixel.x - x, 2) + Math.Pow(anotherPixel.y - y, 2));
+            return distance;
+        }
+
+        public bool IsNotDiagonalToAnotherNearestPixel(Pixel anotherPixel)
+        {
+            var distanceToAnotherPixel = DistanceToAnotherPixel(anotherPixel);
+            //if (distanceToAnotherPixel > 1.415d)
+            //{
+            //    throw new Exception("PIXEL IS NOT NEAREST, YOU MOTHERFUCKER!!!");
+            //}
+            return DistanceToAnotherPixel(anotherPixel) == 1;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Ray
         
         static void Main(string[] args)
         {
-            Console.CursorVisible = false;
+            //Console.CursorVisible = false;
 
             Renderer.DrawScreen(screen);
         }

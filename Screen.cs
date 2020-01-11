@@ -13,7 +13,7 @@ namespace Ray
         public Screen()
         {
             SquareA = new PlayGround(40, 30, 0, 0, '#', ConsoleColor.DarkCyan);
-            lineA = new Line(3, 16, 9, 3);
+            lineA = new Line(2, 3, 37, 9);
         }
     }
 }

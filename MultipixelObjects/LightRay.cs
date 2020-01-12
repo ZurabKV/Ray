@@ -7,35 +7,54 @@ using System.Threading.Tasks;
 
 namespace Ray.MultipixelObjects
 {
-    class LightRay : BasicObject
+    class LightRay : MultipixelObject
     {
         private Pixel startPoint;
         private Pixel endPoint;
 
-        public LightRay(int startX, int startY, int endX, int endY, char shape = '.', ConsoleColor color = ConsoleColor.White) : base(shape, color)
+        public LightRay(Pixel source, Pixel goal, ref MultipixelObject obsticle, char shape = '.', ConsoleColor color = ConsoleColor.White) : base(shape, color)
         {
-            startPoint = new Pixel(startX, startY);
-            endPoint = new Pixel(endX, endY);
-            GenerateBody();
+            startPoint = source;
+            endPoint = goal;
+            GenerateBody( ref obsticle);
         }
 
-        private void GenerateStraightLine()
+        private bool CheckIfIntersectedAnyVisiblePixel(Pixel currentPixel,  ref MultipixelObject obsticle)
+        {
+            bool result = false;
+            foreach (Pixel block in obsticle.Body.Pixels)
+            {
+                if (block.x == currentPixel.x && block.y == currentPixel.y)
+                {
+                    result = true;
+                    block.IsLit = result;
+                }
+            }
+            return result;
+        }
+
+        private void GenerateStraightLine(ref MultipixelObject obsticle)
         {
             int toRight = endPoint.x - startPoint.x;
             int downwards = endPoint.y - startPoint.y;
 
             if (toRight != 0 && downwards != 0)
             {
-                throw new Exception($"line cannot be straight: startPoint.x = {startPoint.x}, startPoint.y = {startPoint.y};  endPoint.x = {endPoint.x}  endPoint.y = {endPoint.y} ");
+                throw new Exception($"line is not straight: startPoint.x = {startPoint.x}, startPoint.y = {startPoint.y};  endPoint.x = {endPoint.x}  endPoint.y = {endPoint.y} ");
             }
 
-            if (downwards == 0) //the draw horizontally
+            if (downwards == 0) // to draw horizontally
             {
                 if (toRight > 0)
                 {
                     for (int i = 0; i <= Math.Abs(toRight); i++)
                     {
-                        Body.Pixels.Add(new Pixel(startPoint.x + i, startPoint.y, Shape, Color));
+                        Pixel currentPixel = new Pixel(startPoint.x + i, startPoint.y, Shape, Color);
+                        if (CheckIfIntersectedAnyVisiblePixel(currentPixel, ref obsticle))
+                        {
+                            break;
+                        }
+                        Body.Pixels.Add(currentPixel);
                     }
                 }
 
@@ -43,7 +62,12 @@ namespace Ray.MultipixelObjects
                 {
                     for (int i = 0; i <= Math.Abs(toRight); i++)
                     {
-                        Body.Pixels.Add(new Pixel(startPoint.x - i, startPoint.y, Shape, Color));
+                        Pixel currentPixel = new Pixel(startPoint.x - i, startPoint.y, Shape, Color);
+                        if (CheckIfIntersectedAnyVisiblePixel(currentPixel, ref obsticle))
+                        {
+                            break;
+                        }
+                        Body.Pixels.Add(currentPixel);
                     }
                 }
             }
@@ -54,7 +78,12 @@ namespace Ray.MultipixelObjects
                 {
                     for (int i = 0; i <= Math.Abs(downwards); i++)
                     {
-                        Body.Pixels.Add(new Pixel(startPoint.x, startPoint.y + i, Shape, Color));
+                        Pixel currentPixel = new Pixel(startPoint.x, startPoint.y + i, Shape, Color);
+                        if (CheckIfIntersectedAnyVisiblePixel(currentPixel, ref obsticle))
+                        {
+                            break;
+                        }
+                        Body.Pixels.Add(currentPixel);
                     }
                 }
 
@@ -62,13 +91,18 @@ namespace Ray.MultipixelObjects
                 {
                     for (int i = 0; i <= Math.Abs(downwards); i++)
                     {
-                        Body.Pixels.Add(new Pixel(startPoint.x, startPoint.y - i, Shape, Color));
+                        Pixel currentPixel = new Pixel(startPoint.x, startPoint.y - i, Shape, Color);
+                        if (CheckIfIntersectedAnyVisiblePixel(currentPixel, ref obsticle))
+                        {
+                            break;
+                        }
+                        Body.Pixels.Add(currentPixel);
                     }
                 }
             }
         }
 
-        protected override void GenerateBody()
+        protected void GenerateBody(ref MultipixelObject obsticle)
         {
             double distX = endPoint.x - startPoint.x;
             double distY = endPoint.y - startPoint.y;
@@ -77,7 +111,7 @@ namespace Ray.MultipixelObjects
 
             if (distX == 0 || distY == 0)
             {
-                GenerateStraightLine();
+                GenerateStraightLine(ref obsticle);
                 return;
             }
 
@@ -93,13 +127,13 @@ namespace Ray.MultipixelObjects
 
                 double moderatedMovesLeft = restrictedMovesMax;
                 int freeMovesLeft = 1;
-                MoveFreely(ref currentCell, ref moderatedMovesLeft, ref freeMovesLeft);
+                MoveFreely(ref currentCell, ref moderatedMovesLeft, ref freeMovesLeft, ref obsticle);
                 //currentCell.Draw(); //for debugging
-                RestrictedMovement(ref currentCell, ref moderatedMovesLeft);
+                RestrictedMovement(ref currentCell, ref moderatedMovesLeft, ref obsticle);
             }
         }
 
-        private void RestrictedMovement(ref Pixel currentCell, ref double moderatedMovesLeft)
+        private void RestrictedMovement(ref Pixel currentCell, ref double moderatedMovesLeft, ref MultipixelObject obsticle)
         {
             while (moderatedMovesLeft > 0)
             {
@@ -121,14 +155,19 @@ namespace Ray.MultipixelObjects
                         }
                     }
                 }
+                
                 currentCell = nearestCellSoFar;
                 //currentCell.Draw(); //for debugging
                 moderatedMovesLeft--;
+                if (CheckIfIntersectedAnyVisiblePixel(currentCell, ref obsticle))
+                {
+                    break;
+                }
                 Body.Pixels.Add(currentCell);
             }
         }
 
-        private void MoveFreely(ref Pixel currentCell, ref double moderatedMovesLeft, ref int freeMovesLeft)
+        private void MoveFreely(ref Pixel currentCell, ref double moderatedMovesLeft, ref int freeMovesLeft, ref MultipixelObject obsticle)
         {
             while (freeMovesLeft >= 1)
             {
@@ -146,6 +185,10 @@ namespace Ray.MultipixelObjects
 
                 freeMovesLeft--;
                 moderatedMovesLeft--;
+                if (CheckIfIntersectedAnyVisiblePixel(currentCell, ref obsticle))
+                {
+                    break;
+                }
                 Body.Pixels.Add(currentCell);
             }
         }

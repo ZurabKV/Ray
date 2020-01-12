@@ -9,7 +9,7 @@ namespace Ray
 {
     class Screen
     {
-        public PlayGround SquareA { get; set; }
+        public Wall SquareA { get; set; }
         
         public Light light { get; set; }
 
@@ -17,10 +17,10 @@ namespace Ray
        
         public Screen()
         {
-            SquareA = new PlayGround(60, 25, 0, 0, '#', ConsoleColor.DarkCyan);
+            SquareA = new Wall(60, 25, 0, 0, '#', ConsoleColor.DarkCyan);
             light = new Light(new Pixel(20, 15));
 
-            obsticle = new Obsticle(40, 8, 40, 18, '%', ConsoleColor.Green);
+            obsticle = new Obsticle(40, 6, 40, 20, '%', ConsoleColor.Green);
 
         }
     }

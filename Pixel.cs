@@ -11,7 +11,7 @@ namespace Ray
         public int x;
         public int y;
 
-        private bool IsLit { get; set; } = false;
+        public bool IsLit { get; set; } = false;
 
         public char shape;
 

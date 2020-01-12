@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ray
 {
+     
     class Light
     {
         public Pixel source { get; set; }
@@ -19,19 +20,19 @@ namespace Ray
             Body = new RayBody();
             source = lightSource;
         }
-        public void CastOn(PixelBody surface)
+        public void CastOn(PixelBody wall, MultipixelObject obsticle)
         {
             Body.rays.Clear();
-            GetBody(surface);
+            GetBody(wall, ref obsticle);
             Body.rays.ForEach(r => r.Draw());
 
         }
 
-        private void GetBody(PixelBody surface)
+        private void GetBody(PixelBody wallBody, ref MultipixelObject obsticle)
         {
-            foreach (Pixel wall in surface.Pixels)
+            foreach (Pixel wall in wallBody.Pixels)
             {
-                LightRay ray = new LightRay(source.x, source.y, wall.x, wall.y);
+                LightRay ray = new  LightRay(source, wall, ref obsticle);
                 Body.rays.Add(ray);
             }
         }

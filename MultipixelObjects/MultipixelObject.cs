@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace Ray.MultipixelObjects
 {
 
-    abstract class BasicObject
+    abstract class MultipixelObject
     {
         protected char Shape;
         protected ConsoleColor Color;
 
         public PixelBody Body;
 
-        public BasicObject(char shape, ConsoleColor color)
+        public MultipixelObject(char shape, ConsoleColor color)
         {
             Shape = shape;
             Color = color;
@@ -25,7 +25,6 @@ namespace Ray.MultipixelObjects
         {
             Body.Pixels.ForEach(p => p.Draw());
         }
-        protected abstract void GenerateBody();
 
         public List<Pixel> GetSurroundingCells(Pixel pixel)
         {

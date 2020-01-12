@@ -12,9 +12,9 @@ namespace Ray
         public static void DrawScreen(Screen screen)
         {
             Console.Clear();
-            screen.SquareA.Draw();
-            screen.light.CastOn(screen.SquareA.Body);
+            //screen.SquareA.Draw();
             screen.obsticle.Draw();
+            screen.light.CastOn(screen.SquareA.Body, screen.obsticle);
         }
     }
 }

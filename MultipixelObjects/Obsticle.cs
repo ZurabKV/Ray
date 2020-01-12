@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ray.MultipixelObjects
 {
-    class Obsticle: BasicObject
+    class Obsticle: MultipixelObject
     {
         private Pixel startPoint;
         private Pixel endPoint;
@@ -63,7 +63,7 @@ namespace Ray.MultipixelObjects
                 }
             }
         }
-        protected override void GenerateBody()
+        protected void GenerateBody()
         {
             double distX = endPoint.x - startPoint.x;
             double distY = endPoint.y - startPoint.y;

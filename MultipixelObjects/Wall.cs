@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ray.MultipixelObjects
 {
-    class PlayGround: BasicObject
+    class Wall: MultipixelObject
     {
         private int SizeX;
 
@@ -16,7 +16,7 @@ namespace Ray.MultipixelObjects
 
         private int StartingY;
 
-        public PlayGround(int sizeX, int sizeY, int startX, int startY, char shape = '#', ConsoleColor color = ConsoleColor.White) : base(shape, color)
+        public Wall(int sizeX, int sizeY, int startX, int startY, char shape = '#', ConsoleColor color = ConsoleColor.White) : base(shape, color)
         {
             SizeX = sizeX;
             SizeY = sizeY;
@@ -25,7 +25,7 @@ namespace Ray.MultipixelObjects
             GenerateBody();
         }
 
-        protected override void GenerateBody()
+        protected void GenerateBody()
         {
             int topBorder = StartingY+1;
             int bottomBorder = StartingY + SizeY;

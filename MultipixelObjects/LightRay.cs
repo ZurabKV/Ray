@@ -10,7 +10,7 @@ namespace Ray.MultipixelObjects
     class LightRay : MultipixelObject
     {
         private Pixel startPoint;
-        private Pixel endPoint;
+        private Pixel endPoint; //wall
 
         public LightRay(Pixel source, Pixel goal, MultipixelObject obsticle, char shape = '.', ConsoleColor color = ConsoleColor.White) : base(shape, color)
         {
@@ -21,7 +21,7 @@ namespace Ray.MultipixelObjects
 
         public override void Draw()
         {
-            Body.Pixels.ToList().ForEach(p => p.Draw());
+            Body.Pixels/*.Skip(Body.Pixels.Count-5).Take(3)*/.ToList().ForEach(p => p.Draw());
         }
 
         private bool CheckIfIntersectedAnyVisiblePixel(Pixel currentPixel, MultipixelObject obsticle)
@@ -76,6 +76,8 @@ namespace Ray.MultipixelObjects
                     return;
                 }
             }
+
+            endPoint.IsLit = true;
         }
 
         private bool RestrictedMovement(ref Pixel currentCell, ref double moderatedMovesLeft, double FloatingPointDelta, MultipixelObject obsticle)
@@ -112,6 +114,8 @@ namespace Ray.MultipixelObjects
                 {
                     return true;
                 }
+                currentCell.shape = Shape;
+                currentCell.color = Color;
                 Body.Pixels.Add(currentCell);
             }
             return false;
@@ -143,6 +147,8 @@ namespace Ray.MultipixelObjects
                     return true;
                 }
 
+                currentCell.shape = Shape;
+                currentCell.color = Color;
                 Body.Pixels.Add(currentCell);
             }
             return false;

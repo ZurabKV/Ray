@@ -23,7 +23,12 @@ namespace Ray.MultipixelObjects
 
         public virtual void Draw()
         {
-            Body.Pixels.ForEach(p => p.Draw());
+            Body.Pixels.Where(p=>p.IsLit).ToList().ForEach(p => p.Draw());
+        }
+
+        public void Unlight()
+        {
+            Body.Pixels.ForEach(p=>p.IsLit=false);
         }
 
         public List<Pixel> GetSurroundingCells(Pixel pixel)

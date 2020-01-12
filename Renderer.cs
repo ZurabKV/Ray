@@ -11,11 +11,13 @@ namespace Ray
     {
         public static void DrawScreen(Screen screen)
         {
+            screen.SquareA.Unlight();
+            screen.obsticle.Unlight();
             Console.Clear();
 
+            screen.light.CastOn(screen.SquareA.Body, screen.obsticle);
             screen.SquareA.Draw();
             screen.obsticle.Draw();
-            screen.light.CastOn(screen.SquareA.Body, screen.obsticle);
         }
     }
 }

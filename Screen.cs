@@ -9,7 +9,7 @@ namespace Ray
 {
     class Screen
     {
-        public Wall SquareA { get; set; }
+        public Walls SquareA { get; set; }
         
         public Light light { get; set; }
 
@@ -17,8 +17,8 @@ namespace Ray
        
         public Screen()
         {
-            SquareA = new Wall(50, 25, 0, 0, '#', ConsoleColor.DarkCyan);
-            light = new Light(new Pixel(20, 12));
+            SquareA = new Walls(50, 25, 0, 0, '#', ConsoleColor.DarkCyan);
+            light = new Light(new Pixel(20, 12, 'O', ConsoleColor.Cyan), '.', ConsoleColor.DarkYellow);
 
             obsticle = new Obsticle('%', ConsoleColor.Green);
             obsticle.AddLineBody(new Pixel(33, 6, '%', ConsoleColor.DarkGreen), new Pixel(40, 20));

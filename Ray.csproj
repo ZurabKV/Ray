@@ -71,7 +71,7 @@
     <Compile Include="MultipixelObjects\Obsticle.cs" />
     <Compile Include="MultipixelObjects\LightRay.cs" />
     <Compile Include="PixelBody.cs" />
-    <Compile Include="MultipixelObjects\Wall.cs" />
+    <Compile Include="MultipixelObjects\Walls.cs" />
     <Compile Include="RayBody.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Screen.cs" />

@@ -15,8 +15,13 @@ namespace Ray
 
         private RayBody Body { get; set; }
 
-        public Light(Pixel lightSource)
+        private char Shape;
+        private ConsoleColor Color;
+
+        public Light(Pixel lightSource, char shape, ConsoleColor color)
         {
+            Shape = shape;
+            Color = color;
             Body = new RayBody();
             source = lightSource;
         }
@@ -25,14 +30,14 @@ namespace Ray
             Body.rays.Clear();
             GetBody(wall, obsticle);
             Body.rays.ForEach(r => r.Draw());
-
+            source.Draw();
         }
 
         private void GetBody(PixelBody wallBody, MultipixelObject obsticle)
         {
             foreach (Pixel wall in wallBody.Pixels)
             {
-                LightRay ray = new  LightRay(source, wall, obsticle);
+                LightRay ray = new  LightRay(source, wall, obsticle, Shape, Color);
                 Body.rays.Add(ray);
             }
         }

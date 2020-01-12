@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ray.MultipixelObjects
 {
-    class Wall: MultipixelObject
+    class Walls: MultipixelObject
     {
         private int SizeX;
 
@@ -16,7 +16,7 @@ namespace Ray.MultipixelObjects
 
         private int StartingY;
 
-        public Wall(int sizeX, int sizeY, int startX, int startY, char shape = '#', ConsoleColor color = ConsoleColor.White) : base(shape, color)
+        public Walls(int sizeX, int sizeY, int startX, int startY, char shape = '#', ConsoleColor color = ConsoleColor.White) : base(shape, color)
         {
             SizeX = sizeX;
             SizeY = sizeY;

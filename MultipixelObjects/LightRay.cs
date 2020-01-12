@@ -16,10 +16,15 @@ namespace Ray.MultipixelObjects
         {
             startPoint = source;
             endPoint = goal;
-            GenerateBody( ref obsticle);
+            GenerateBody(ref obsticle);
         }
 
-        private bool CheckIfIntersectedAnyVisiblePixel(Pixel currentPixel,  ref MultipixelObject obsticle)
+        public override void Draw()
+        {
+            Body.Pixels.Take(Body.Pixels.Count - 0).ToList().ForEach(p => p.Draw());
+        }
+
+        private bool CheckIfIntersectedAnyVisiblePixel(Pixel currentPixel, ref MultipixelObject obsticle)
         {
             bool result = false;
             foreach (Pixel block in obsticle.Body.Pixels)
@@ -102,12 +107,10 @@ namespace Ray.MultipixelObjects
             }
         }
 
-        protected void GenerateBody(ref MultipixelObject obsticle)
+        private void GenerateBody(ref MultipixelObject obsticle)
         {
             double distX = endPoint.x - startPoint.x;
             double distY = endPoint.y - startPoint.y;
-
-            double directionCoef = Math.Abs(distX / distY);
 
             if (distX == 0 || distY == 0)
             {
@@ -115,27 +118,32 @@ namespace Ray.MultipixelObjects
                 return;
             }
 
+            double directionCoef = Math.Abs(distX / distY);
+
             double directionCoef1Plus = directionCoef > 1 ? directionCoef : 1 / directionCoef;
-            double restrictedMovesMax = (directionCoef1Plus);
-            //double coefFloatingPart = Math.Abs(directionCoef1Plus-restrictedMovesMax);
+            double restrictedMovesMaxFloor = Math.Floor(directionCoef1Plus);
+            double FloatingPointDelta = directionCoef1Plus - Math.Floor(directionCoef1Plus);
+            double moderatedMovesLeft = 0;
+            int freeMovesLeft = 0;
 
             Pixel currentCell = startPoint;
-            while (currentCell.x != endPoint.x && currentCell.y != endPoint.y)
-            {
-                //currentCell.Draw(); //for debugging
-                //endPoint.Draw(); //for debugging
+            //currentCell.Draw(); //for debugging
+            //endPoint.Draw(); //for debugging
 
-                double moderatedMovesLeft = restrictedMovesMax;
-                int freeMovesLeft = 1;
-                MoveFreely(ref currentCell, ref moderatedMovesLeft, ref freeMovesLeft, ref obsticle);
-                //currentCell.Draw(); //for debugging
-                RestrictedMovement(ref currentCell, ref moderatedMovesLeft, ref obsticle);
+
+            while ((currentCell.x == endPoint.x && currentCell.y == endPoint.y) == false)
+            {
+                freeMovesLeft++;
+                moderatedMovesLeft += restrictedMovesMaxFloor;
+                MoveFreely(ref currentCell, ref moderatedMovesLeft, ref freeMovesLeft, FloatingPointDelta, ref obsticle);
+                RestrictedMovement(ref currentCell, ref moderatedMovesLeft, FloatingPointDelta, ref obsticle);
             }
         }
 
-        private void RestrictedMovement(ref Pixel currentCell, ref double moderatedMovesLeft, ref MultipixelObject obsticle)
+        private void RestrictedMovement(ref Pixel currentCell, ref double moderatedMovesLeft, double FloatingPointDelta, ref MultipixelObject obsticle)
         {
-            while (moderatedMovesLeft > 0)
+            moderatedMovesLeft += FloatingPointDelta;
+            while (moderatedMovesLeft >= 1)
             {
                 Pixel nearestCellSoFar = currentCell;
 
@@ -155,19 +163,22 @@ namespace Ray.MultipixelObjects
                         }
                     }
                 }
-                
+
                 currentCell = nearestCellSoFar;
                 //currentCell.Draw(); //for debugging
+
                 moderatedMovesLeft--;
+
                 if (CheckIfIntersectedAnyVisiblePixel(currentCell, ref obsticle))
                 {
                     break;
                 }
                 Body.Pixels.Add(currentCell);
+
             }
         }
 
-        private void MoveFreely(ref Pixel currentCell, ref double moderatedMovesLeft, ref int freeMovesLeft, ref MultipixelObject obsticle)
+        private void MoveFreely(ref Pixel currentCell, ref double moderatedMovesLeft, ref int freeMovesLeft, double FloatingPointDelta, ref MultipixelObject obsticle)
         {
             while (freeMovesLeft >= 1)
             {
@@ -183,8 +194,11 @@ namespace Ray.MultipixelObjects
                     }
                 }
 
+                //currentCell.Draw(); //for debugging
+
                 freeMovesLeft--;
-                moderatedMovesLeft--;
+                moderatedMovesLeft--; //uncommented
+                //moderatedMovesLeft += FloatingPointDelta;
                 if (CheckIfIntersectedAnyVisiblePixel(currentCell, ref obsticle))
                 {
                     break;

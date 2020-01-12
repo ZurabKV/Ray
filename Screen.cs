@@ -17,10 +17,10 @@ namespace Ray
        
         public Screen()
         {
-            SquareA = new Wall(60, 25, 0, 0, '#', ConsoleColor.DarkCyan);
-            light = new Light(new Pixel(20, 15));
+            SquareA = new Wall(50, 25, 0, 0, '#', ConsoleColor.DarkCyan);
+            light = new Light(new Pixel( 20, 12));
 
-            obsticle = new Obsticle(40, 6, 40, 20, '%', ConsoleColor.Green);
+            obsticle = new Obsticle(40, 6, 40, 10, '%', ConsoleColor.Green);
 
         }
     }

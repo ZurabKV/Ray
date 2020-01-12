@@ -14,5 +14,9 @@ namespace Ray
         {
             Pixels = new List<Pixel>();
         }
+        //public void Add(Pixel pixel)
+        //{
+        //    Pixels.Add();
+        //}
     }
 }

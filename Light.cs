@@ -23,16 +23,16 @@ namespace Ray
         public void CastOn(PixelBody wall, MultipixelObject obsticle)
         {
             Body.rays.Clear();
-            GetBody(wall, ref obsticle);
+            GetBody(wall, obsticle);
             Body.rays.ForEach(r => r.Draw());
 
         }
 
-        private void GetBody(PixelBody wallBody, ref MultipixelObject obsticle)
+        private void GetBody(PixelBody wallBody, MultipixelObject obsticle)
         {
             foreach (Pixel wall in wallBody.Pixels)
             {
-                LightRay ray = new  LightRay(source, wall, ref obsticle);
+                LightRay ray = new  LightRay(source, wall, obsticle);
                 Body.rays.Add(ray);
             }
         }
